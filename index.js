@@ -12,6 +12,7 @@ client.on('ready', () => {
 
 client.on('message', message => {
 	const prefix = '?';
+	const user = message.mentions.users.first();
 	if (!message.guild) return;
 	if (message.content === '<@!162320756489977856>') {
 		message.channel.send('Maiku is not available.');
@@ -21,10 +22,9 @@ client.on('message', message => {
 	} else if (message.content === prefix + 'id') {
 		message.channel.send('Msg ID: ' + message.content);
 	} else if (message.content.startsWith(prefix + 'gay')) {
-		const user = message.mentions.users.first();
 		if (user) {
 			message.channel.send('What?');
-			message.channel.send(user+' is fucking gay 😷');
+			message.channel.send(user + ' is fucking gay 😷');
 		} else {
 			return message.channel.send(prefix + 'embed');
 		}
@@ -38,12 +38,14 @@ client.on('message', message => {
 			.setDescription('Likes Shelbly a little too much');
 		// Send the embed to the same channel as the message
 		message.channel.send(embed);
+	}else if(message.content.startsWith( prefix +'getid')) {
+		message.channel.send(user.equals(message.author))
 	} else if (message.content.startsWith(prefix + 'kick')) {
 		// Assuming we mention someone in the message, this will return the user
 		// Read more about mentions over at https://discord.js.org/#/docs/main/stable/class/MessageMentions
 		const user = message.mentions.users.first();
 		// If we have a user mentioned
-		if (user) {
+		if (user === '<@!162320756489977856>') {
 			// Now we get the member from the user
 			const member = message.guild.member(user);
 			// If the member is in the guild
