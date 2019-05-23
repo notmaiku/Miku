@@ -10,8 +10,13 @@ client.on('ready', () => {
 	console.log('Ready!');
 });
 
+const prefix = '?';
+
 client.on('message', message => {
-	const prefix = '?';
+	//Preventing bot-ception
+	if (!message.content.startsWith(prefix) || message.author.bot)
+		return;
+
 	const user = message.mentions.users.first();
 	if (!message.guild) return;
 	if (message.content === '<@!162320756489977856>') {
