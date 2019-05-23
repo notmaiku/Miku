@@ -17,9 +17,11 @@ const prefix = config.prefix;
 
 client.on('message', message => {
 	//Preventing bot-ception
-	console.log(prefix);
 	if (!message.content.startsWith(prefix) || message.author.bot)
 		return;
+
+	const args = message.content.slice(prefix.length).trim().split(/ +/g);
+	const command = args.shift().toLowerCase();
 
 	//for bot-dev only commands use:
 	// if(message.author.id !== config.ownerID)
@@ -28,22 +30,23 @@ client.on('message', message => {
 	//     code here.
 
 	const user = message.mentions.users.first();
-	if (!message.guild) return;
-	if (message.content === '<@!162320756489977856>') {
+	if(!message.guild) return;
+	if(message.content === '<@!162320756489977856>') {
 		message.channel.send('Maiku is not available.');
 		message.channel.send('However you can talk to his rep Ajuk');
-	} else if (message.content === prefix + 'avt') {
+	}
+	 else if(command === 'avt') {
 		message.channel.send(message.author.avatarURL);
-	} else if (message.content === prefix + 'id') {
+	} else if(command === 'id') {
 		message.channel.send('Msg ID: ' + message.content);
-	} else if (message.content.startsWith(prefix + 'gay')) {
-		if (user) {
+	} else if(command === 'gay') {
+		if(user) {
 			message.channel.send('What?');
 			message.channel.send(user + ' is fucking gay 😷');
 		} else {
 			return message.channel.send(prefix + 'embed');
 		}
-	} else if (message.content === prefix + 'embed') {
+	} else if(command === 'embed') {
 		const embed = new RichEmbed()
 			// Set the title of the field
 			.setTitle('Tyler')
@@ -53,45 +56,60 @@ client.on('message', message => {
 			.setDescription('Likes Shelbly a little too much');
 		// Send the embed to the same channel as the message
 		message.channel.send(embed);
-	}else if(message.content.startsWith( prefix +'getid')) {
+	}else if(command === 'getid') {
 		message.channel.send(user.equals(message.author))
-	} else if (message.content.startsWith(prefix + 'kick')) {
-		// Assuming we mention someone in the message, this will return the user
+	} else if(command ===  'kick') {
 		// Read more about mentions over at https://discord.js.org/#/docs/main/stable/class/MessageMentions
-		const user = message.mentions.users.first();
-		// If we have a user mentioned
-		if (user === '<@!162320756489977856>') {
-			// Now we get the member from the user
-			const member = message.guild.member(user);
-			// If the member is in the guild
-			if (member) {
-				/**
-				 * Kick the member
-				 * Make sure you run this on a member, not a user!
-				 * There are big differences between a user and a member
-				 */
-				member
-					.kick('Optional reason that will display in the audit logs')
-					.then(() => {
-						// We let the message author know we were able to kick the person
-						message.reply(`Successfully kicked ${user.tag}`);
-					})
-					.catch(err => {
-						// An error happened
-						// This is generally due to the bot not being able to kick the member,
-						// either due to missing permissions or role hierarchy
-						message.reply('I was unable to kick the member');
-						// Log the error
-						console.error(err);
-					});
-			} else {
-				// The mentioned user isn't in this guild
-				message.reply("That user isn't in this guild!");
-			}
-			// Otherwise, if no user was mentioned
+		let member = message.mentions.members.first();
+	 	let reason = args.slice(1).join(" ");
+
+	 	//sending the kicked user a kick message
+		var kickMessage = "You have been kicked from "+message.guild.name+" for the reason: "+reason
+
+		member.send(kickMessage)
+			.catch(err => {
+				message.reply("Cannot send messages to this user.");
+			});
+
+
+		// If the member is in the guild
+		if (member) {
+			member.kick(reason)
+				.then(() => {
+
+					// We let the message author know we were able to kick the person
+					if(reason === null)
+						message.reply(`Successfully kicked ${user.tag} for reason: none`);
+					else
+						message.reply(`Successfully kicked ${user.tag} for reason: ` + reason);
+
+					//Sends the previous member a DM for why they were kicked.
+				})
+				.catch(err => {
+					// An error happened
+					// This is generally due to the bot not being able to kick the member,
+					// either due to missing permissions or role hierarchy
+					message.reply('I was unable to kick the member');
+					// Log the error
+					console.error(err);
+				});
 		} else {
-			message.reply("You didn't mention the user to kick!");
+			// Invalid user mentioned.
+			message.reply("Please specify a valid member to kick.");
 		}
+
+	} else if (command === "asl") { //Command with arguments example.
+		let [age, sex, location] = args;
+		message.reply(`Hello ${message.author.username}, I see you're a ${age} year old ${sex} from ${location}. Wanna date?`);
+	}
+	 else if (command === "dm") {
+		let member = message.mentions.members.first();
+		let dm = args.slice(1).join(" ");
+
+		member.send(dm)
+			.catch(err => {
+				message.reply("Cannot send messages to this user.");
+			});
 	}
 });
 
