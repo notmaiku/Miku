@@ -1,4 +1,4 @@
-export default (client, message) => {
+module.exports = (client, message) => {
 	// Ignore all bots
 	if (message.author.bot) return;
 

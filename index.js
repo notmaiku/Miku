@@ -1,13 +1,13 @@
-import { Client } from 'discord.js';
-import Enmap from 'enmap';
-import { readdir } from 'fs';
+const Discord = require('discord.js');
+const Enmap = require('enmap');
+const fs = require('fs');
 
-const client = new Client();
-import config, { token } from './config.json';
+const client = new Discord.Client();
+const config = require('./config.json');
 // We also need to make sure we're attaching the config to the CLIENT so it's accessible everywhere!
 client.config = config;
 
-readdir('./events/', (err, files) => {
+fs.readdir('./events/', (err, files) => {
 	if (err) return console.error(err);
 	files.forEach(file => {
 		const event = require(`./events/${file}`);
@@ -18,7 +18,7 @@ readdir('./events/', (err, files) => {
 
 client.commands = new Enmap();
 
-readdir('./commands/', (err, files) => {
+fs.readdir('./commands/', (err, files) => {
 	if (err) return console.error(err);
 	files.forEach(file => {
 		if (!file.endsWith('.js')) return;
@@ -29,4 +29,4 @@ readdir('./commands/', (err, files) => {
 	});
 });
 
-client.login(token);
+client.login(config.token);
