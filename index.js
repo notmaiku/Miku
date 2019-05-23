@@ -4,18 +4,28 @@ const { Client, RichEmbed } = require('discord.js');
 // create a new Discord client
 const client = new Client();
 
+//require the config file
+const config = require("./config.json");
+
 // when the client is ready, run this code
 // this event will only trigger one time after logging in
 client.on('ready', () => {
 	console.log('Ready!');
 });
 
-const prefix = '?';
+const prefix = config.prefix;
 
 client.on('message', message => {
 	//Preventing bot-ception
+	console.log(prefix);
 	if (!message.content.startsWith(prefix) || message.author.bot)
 		return;
+
+	//for bot-dev only commands use:
+	// if(message.author.id !== config.ownerID)
+	//     return;
+	// else
+	//     code here.
 
 	const user = message.mentions.users.first();
 	if (!message.guild) return;
@@ -86,4 +96,4 @@ client.on('message', message => {
 });
 
 // login to Discord with your app's token
-client.login('NTgwNTkyOTI3NjgwNjI2Njkx.XOS9wg.WGzvtaebZX5u4OZ_8FdncWHZtB0');
+client.login(config.token);
