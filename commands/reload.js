@@ -14,3 +14,17 @@ exports.run = (client, message, args) => {
     client.commands.set(commandName, props);
     message.reply(`The command ${commandName} has been reloaded`);
 };
+
+exports.conf = {
+    enabled: true,
+    guildOnly: false,
+    aliases: [],
+    permLevel: "Bot Admin"
+};
+
+exports.help = {
+    name: "reload",
+    category: "System",
+    description: "Reloads a command that\"s been modified.",
+    usage: "reload [command]"
+};

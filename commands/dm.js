@@ -6,3 +6,17 @@ let member = message.mentions.members.first();
 				message.reply("Cannot send messages to this user.");
             });
 }
+
+exports.conf = {
+	enabled: true,
+	guildOnly: false,
+	aliases: [],
+	permLevel: "Moderator"
+};
+
+exports.help = {
+	name: "dm",
+	category: "Communication",
+	description: "dm's the given user",
+	usage: "dm @[user] [message]"
+};

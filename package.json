@@ -11,6 +11,7 @@
   "dependencies": {
     "better-sqlite-pool": "^0.2.2",
     "discord.js": "^11.5.0",
-    "enmap": "^4.8.7"
+    "enmap": "^4.8.7",
+    "inquirer": "^6.3.1"
   }
 }

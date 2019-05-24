@@ -1,6 +1,6 @@
 exports.run = (client, message, [mention, ...reason]) => {
-  const modRole = message.guild.roles.find(role => role.name === "Mods");
-  if (!modRole) return console.log("The Mods role does not exist");
+  const modRole = message.guild.roles.find(role => role.name === this.conf.permLevel);
+  if (!modRole) return console.log("The "+this.conf.permLevel+" role does not exist");
 
   if (!message.member.roles.has(modRole.id))
     return message.reply("You can't use this command.");
@@ -15,4 +15,18 @@ exports.run = (client, message, [mention, ...reason]) => {
   kickMember.kick(reason.join(" ")).then(member => {
     message.reply(`${member.user.username} was succesfully kicked.`);
   });
+};
+
+exports.conf = {
+  enabled: true,
+  guildOnly: true,
+  aliases: [],
+  permLevel: "Moderator"
+};
+
+exports.help = {
+  name: "kick",
+  category: "Administration",
+  description: "kicks a member from the guild",
+  usage: "kick @user"
 };
