@@ -6,7 +6,7 @@ const fs = require("fs");
 let baseConfig = fs.readFileSync("./config.js", "utf8");
 
 const defaultSettings = {
-    "prefix": "~",
+    "prefix": "?",
     "modLogChannel": "mod-log",
     "modRole": "Moderator",
     "adminRole": "Administrator",

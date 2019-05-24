@@ -6,12 +6,12 @@ module.exports = (client, message) => {
 	// If there is no guild, get default conf (DMs)
 	const settings = message.settings = client.getSettings(message.guild);
 
-	// Ignore messages not starting with the prefix (in config.json)
-	if (message.content.indexOf(client.config.defaultSettings.prefix) !== 0) return;
+	// Ignore messages not starting with the prefix (in config file)
+	if (message.content.indexOf(settings.prefix) !== 0) return;
 
 	// Our standard argument/command name definition.
 	const args = message.content
-		.slice(client.config.defaultSettings.prefix.length)
+		.slice(settings.prefix.length)
 		.trim()
 		.split(/ +/g);
 	const command = args.shift().toLowerCase();
