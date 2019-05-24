@@ -23,7 +23,7 @@ const config = {
         "adminRole": "Administrator",
         "systemNotice": "true", // This gives a notice when a user tries to run a command that they do not have permission to use.
         "welcomeChannel": "cancer",
-        "welcomeMessage": "oWo? Heyy guys! We got a new guy. Hehe say Hi to {{user}} everyone!💖",
+        "welcomeMessage": "oWo? Heyy guys! We got a new guy. Hehe say Hi to @{{user}} everyone!💖",
         "welcomeEnabled": "false"
     },
 

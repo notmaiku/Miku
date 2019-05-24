@@ -12,7 +12,7 @@ const defaultSettings = {
     "adminRole": "Administrator",
     "systemNotice": "true",
     "welcomeChannel": "cancer",
-    "welcomeMessage": "Say hello to {{user}}, everyone! We all need a warm welcome sometimes :D",
+    "welcomeMessage": "oWo? Heyy guys! We got a new guy. Hehe say Hi to {{user}} everyone!💖",
     "welcomeEnabled": "true"
 };
 
