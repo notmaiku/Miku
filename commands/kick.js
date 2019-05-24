@@ -1,6 +1,6 @@
 exports.run = (client, message, [mention, ...reason]) => {
   const modRole = message.guild.roles.find(role => role.name === this.conf.permLevel);
-  if (!modRole) return console.log("The "+this.conf.permLevel+" role does not exist");
+  if (!modRole) return console.log("The " + this.conf.permLevel + " role does not exist");
 
   if (!message.member.roles.has(modRole.id))
     return message.reply("You can't use this command.");
@@ -11,7 +11,11 @@ exports.run = (client, message, [mention, ...reason]) => {
   if (!message.guild.me.hasPermission("KICK_MEMBERS")) return message.reply("");
 
   const kickMember = message.mentions.members.first();
-
+  let dm = reason.slice().join(" ");
+  kickMember.send(dm)
+    .catch(err => {
+      message.reply("Cannot send messages to this user.");
+    });
   kickMember.kick(reason.join(" ")).then(member => {
     message.reply(`${member.user.username} was succesfully kicked.`);
   });

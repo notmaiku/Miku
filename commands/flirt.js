@@ -1,7 +1,7 @@
 exports.run = (client, message, args) => {
     const target = message.mentions.members.first();
     message.channel.send(
-            `HEY! ${target} want sum fuk?`
+            `Ara ara~ ${target} are you getting short on money mister?`
     );
 };
 

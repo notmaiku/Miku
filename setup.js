@@ -11,9 +11,9 @@ const defaultSettings = {
     "modRole": "Moderator",
     "adminRole": "Administrator",
     "systemNotice": "true",
-    "welcomeChannel": "welcome",
+    "welcomeChannel": "cancer",
     "welcomeMessage": "Say hello to {{user}}, everyone! We all need a warm welcome sometimes :D",
-    "welcomeEnabled": "false"
+    "welcomeEnabled": "true"
 };
 
 const settings = new Enmap({
