@@ -10,6 +10,17 @@ client.config = require("./config.js");
 // the bot, like logs and elevation features.
 require("./modules/functions.js")(client);
 
+//Importing Firebase
+var admin = require("firebase-admin");
+var serviceAccount = require("./gal-bot-firebase-adminsdk-733wh-f9961c0413.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://gal-bot.firebaseio.com"
+});
+
+export var ref = firebase.database().ref('users');
+
 client.commands = new Enmap();
 client.settings = new Enmap({name: "settings"});
 
