@@ -16,6 +16,12 @@ firebase.initializeApp(client.firebaseConfig);
 client.commands = new Enmap();
 client.settings = new Enmap({name: "settings"});
 
+// Require our logger
+client.logger = require("./modules/Logger");
+
+// Let's start by getting some useful functions that we'll use throughout
+// the bot, like logs and elevation features.
+require("./modules/functions.js")(client);
 const init = async () => {
 
   fs.readdir("./events/", (err, files) => {
