@@ -1,4 +1,3 @@
-
 exports.run = (client, message, args) => {
     const target = message.mentions.members.first();
     message.channel.send(

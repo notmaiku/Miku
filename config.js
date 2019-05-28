@@ -16,7 +16,7 @@ const config = {
     // DO NOT LEAVE ANY OF THESE BLANK, AS YOU WILL NOT BE ABLE TO UPDATE THEM
     // VIA COMMANDS IN THE GUILD.
 
-    "defaultSettings" : {
+    "defaultSettings": {
         "prefix": "?",
         "modLogChannel": "mod-log",
         "modRole": "Moderator",
@@ -31,7 +31,8 @@ const config = {
 
     permLevels: [
         // This is the lowest permisison level, this is for non-roled users.
-        { level: 0,
+        {
+            level: 0,
             name: "User",
             // Don't bother checking, just return true which allows them to execute any command their
             // level allows them to.
@@ -39,7 +40,8 @@ const config = {
         },
 
         // This is your permission level, the staff levels should always be above the rest of the roles.
-        { level: 2,
+        {
+            level: 2,
             // This is the name of the role.
             name: "Moderator",
             // The following lines check the guild the message came from for the roles.
@@ -56,7 +58,8 @@ const config = {
             }
         },
 
-        { level: 3,
+        {
+            level: 3,
             name: "Administrator",
             check: (message) => {
                 try {
@@ -68,7 +71,8 @@ const config = {
             }
         },
         // This is the server owner.
-        { level: 4,
+        {
+            level: 4,
             name: "Server Owner",
             // Simple check, if the guild owner id matches the message author's ID, then it will return true.
             // Otherwise it will return false.
@@ -77,7 +81,8 @@ const config = {
 
         // Bot Support is a special inbetween level that has the equivalent of server owner access
         // to any server they joins, in order to help troubleshoot the bot on behalf of owners.
-        { level: 8,
+        {
+            level: 8,
             name: "Bot Support",
             // The check is by reading if an ID is part of this array. Yes, this means you need to
             // change this and reboot the bot to add a support user. Make it better yourself!
@@ -85,7 +90,8 @@ const config = {
         },
 
         // Bot Admin has some limited access like rebooting the bot or reloading commands.
-        { level: 9,
+        {
+            level: 9,
             name: "Bot Admin",
             check: (message) => config.admins.includes(message.author.id)
         },
@@ -93,12 +99,24 @@ const config = {
         // This is the bot owner, this should be the highest permission level available.
         // The reason this should be the highest level is because of dangerous commands such as eval
         // or exec (if the owner has that).
-        { level: 10,
+        {
+            level: 10,
             name: "Bot Owner",
             // Another simple check, compares the message author id to the one stored in the config file.
             check: (message) => message.client.config.ownerID === message.author.id
         }
-    ]
+    ],
+    //Firebase config
+    // Your web app's Firebase configuration
+    firebaseConfig: {
+        apiKey: "AIzaSyCiLIpLcBbNiKIV8oHPIgPU4Va_nhbZePQ",
+        authDomain: "gal-bot.firebaseapp.com",
+        databaseURL: "https://gal-bot.firebaseio.com",
+        projectId: "gal-bot",
+        storageBucket: "gal-bot.appspot.com",
+        messagingSenderId: "633250617894",
+        appId: "1:633250617894:web:f4efefeafd277313"
+    }
 };
 
 module.exports = config;
