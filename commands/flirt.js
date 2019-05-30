@@ -5,10 +5,11 @@ exports.run = (client, message, args) => {
     );
     const admin = require("firebase-admin");
 
+    //references
     var db = admin.firestore();
-
-    // Makes a user in firebase
     var userRef = db.collection('users').doc(`${target}`);
+    
+    // Makes a user in firebase
     var setMaiku = userRef.set({
         affection: 0
     })
