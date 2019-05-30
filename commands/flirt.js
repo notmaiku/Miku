@@ -8,21 +8,20 @@ exports.run = (client, message, args) => {
     var db = admin.firestore();
 
     // Makes a user in firebase
-    var setDiscord = db.collection('users').doc(`${target}`);
-    var setMaiku = setDiscord.set({
+    var userRef = db.collection('users').doc(`${target}`);
+    var setMaiku = userRef.set({
         affection: 0
     })
 
     // This gets the data
-    var maikuRef = db.collection('users').doc(`${target}`);
-    var getDoc = maikuRef.get()
+    var getDoc = userRef.get()
         .then(doc => {
             if (!doc.exists) {
                 console.log(`Document doesn't exist`)
             } else {
                 //updates
                 var likes = doc.data().affection + 1
-                maikuRef.update({ affection: likes })
+                userRef.update({ affection: likes })
                 message.channel.send(`${target} likes me this much ${likes}`)
             }
         })
