@@ -7,18 +7,20 @@ exports.run = (client, message, args) => {
 
     var db = admin.firestore();
 
+    // Makes a user in firebase
     var setDiscord = db.collection('users').doc(`${target}`);
     var setMaiku = setDiscord.set({
         affection: 0
     })
 
-
+    // This gets the data
     var maikuRef = db.collection('users').doc(`${target}`);
     var getDoc = maikuRef.get()
         .then(doc => {
             if (!doc.exists) {
                 console.log(`Document doesn't exist`)
             } else {
+                //updates
                 var likes = doc.data().affection + 1
                 maikuRef.update({ affection: likes })
                 message.channel.send(`${target} likes me this much ${likes}`)
@@ -39,6 +41,6 @@ exports.conf = {
 exports.help = {
     name: "flirt",
     category: "Miscellaneous",
-    description: "flirts with the given user",
+    description: "flirts with the given user and tracks crush lvl",
     usage: "flirt @[user]"
 };

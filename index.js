@@ -25,8 +25,6 @@ admin.initializeApp({
   databaseURL: "https://gal-bot.firebaseio.com"
 });
 
-
-console.log(client.config.firebaseConfig)
 client.commands = new Enmap();
 client.settings = new Enmap({name: "settings"});
 
