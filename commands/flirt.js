@@ -44,3 +44,4 @@ exports.help = {
     description: "flirts with the given user and tracks crush lvl",
     usage: "flirt @[user]"
 };
+//shea is gay
