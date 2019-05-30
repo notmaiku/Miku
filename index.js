@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const Enmap = require("enmap");
 const fs = require("fs");
 const firebase = require("firebase");
+var admin = require("firebase-admin");
 
 const client = new Discord.Client();
 client.config = require("./config.js");
@@ -11,8 +12,21 @@ client.config = require("./config.js");
 // the bot, like logs and elevation features.
 require("./modules/functions.js")(client);
 
-firebase.initializeApp(client.firebaseConfig);
+//realtime firebase
 
+firebase.initializeApp(client.config.firebaseConfig)
+
+//firestore 
+
+var serviceAccount = require("./galconf.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://gal-bot.firebaseio.com"
+});
+
+
+console.log(client.config.firebaseConfig)
 client.commands = new Enmap();
 client.settings = new Enmap({name: "settings"});
 

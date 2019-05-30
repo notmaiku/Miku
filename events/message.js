@@ -32,7 +32,7 @@ module.exports = (client, message) => {
   Your permission level is ${level} (${client.config.permLevels.find(l => l.level === level).name})
   This command requires level ${client.levelCache[cmd.conf.permLevel]} (${cmd.conf.permLevel})`);
 		} else {
-			return message.channel.send("ur mom gay");
+			return message.channel.send("Your not in kool kids klub yet");
 		}
 	}
 
