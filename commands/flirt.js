@@ -1,18 +1,19 @@
 exports.run = (client, message, args) => {
     const target = message.mentions.members.first();
-    message.channel.send(
-        `Ara ara~ ${target} are you getting short on money mister?😏`
-    );
     const admin = require("firebase-admin");
 
     //references
     var db = admin.firestore();
     var userRef = db.collection('users').doc(`${target}`);
-    
-    // Makes a user in firebase
-    var setMaiku = userRef.set({
-        affection: 0
-    })
+
+    // Checks to register discord user into firebase
+    if (target != null || undefined) {
+        var setMaiku = userRef.set({
+            affection: 0
+        })
+    } else {
+        message.channel.send(`Hey! Try defining a user first 😅`)
+    }
 
     // This gets the data
     var getDoc = userRef.get()
@@ -23,6 +24,9 @@ exports.run = (client, message, args) => {
                 //updates
                 var likes = doc.data().affection + 1
                 userRef.update({ affection: likes })
+                message.channel.send(
+                    `Ara ara~ ${target} are you getting short on money mister?😏`
+                );
                 message.channel.send(`${target} likes me this much ${likes}`)
             }
         })
@@ -44,4 +48,3 @@ exports.help = {
     description: "flirts with the given user and tracks crush lvl",
     usage: "flirt @[user]"
 };
-//shea is gay
