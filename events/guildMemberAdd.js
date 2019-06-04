@@ -1,9 +1,28 @@
 // This event executes when a new member joins a server. Let's welcome them!
 
 module.exports = (client, member) => {
+  //setup database
+  const admin = require("firebase-admin");
+
+  //references
+  var db = admin.firestore();
+
   // Load the guild's settings
   const settings = client.getSettings(member.guild);
   console.log(settings)
+
+  //storing the new member onto firebase
+  if (!member.user.bot) {
+      console.log(`${member.guild.id}`);
+      var currentMember = db.collection('servers').doc(`${member.guild.id}`).collection(`members`).doc(`${member.id}`);
+      var memberData = {
+          id: `${member.id}`,
+          username: `${member.user.username}`,
+          discriminator: `${member.user.discriminator}`,
+          gayness: `1`
+      };
+      currentMember.set(memberData);
+  }
 
   // If welcome is off, don't proceed (don't welcome the user)
   if (settings.welcomeEnabled !== "true") return;
