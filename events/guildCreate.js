@@ -20,14 +20,13 @@ module.exports = (client, guild) => {
     var membersInServer = db.collection('servers').doc(`${guild.id}`).collection(`members`);
 
     // //adding each user as a document to the users collection within the server
-    guild.members.forEach(function (member, i) {
+    guild.members.forEach((member) => {
         if (!member.user.bot) { //ignoring the bots in the server.
             var currentMember = db.collection('servers').doc(`${guild.id}`).collection(`members`).doc(`${member.id}`);
             var memberData = {
                 id: `${member.id}`,
                 username: `${member.user.username}`,
                 discriminator: `${member.user.discriminator}`,
-                gayness: `1`
             };
             currentMember.set(memberData)
         }

@@ -6,42 +6,44 @@ exports.run = (client, message, args, member) => {
     //references
     var db = admin.firestore();
 
-    // Checks to register discord user into firebase
+    //Checks for non strings
     if (target != null || undefined) {
         var userRef = db
             .collection('servers')
             .doc(`${message.guild.id}`)
             .collection('members')
             .doc(`${target.id}`);
+            //Members's affection field is instantiated 
         var memberData = userRef.set(
             {
                 affection: 0
             },
             { merge: true }
         );
-     var getDoc = userRef
-        .get()
-        .then(doc => {
-            if (doc.data().id == '104030302023720960') {
-                message.channel.send("Sorry, you're not in my league 😒");
-            } else if (!doc.exists || doc.data().affection == undefined) {
-                message.channel.send("You don't like me what D:");
-                console.log(`Document doesn't exist`);
-            } else {
-                //updates
-                var likes = doc.data().affection + 1;
-                userRef.update({ affection: likes });
-                message.channel.send(`oWo? ${target} What's up hot suff?😏`);
-                message.channel.send(`${target} likes me this much ${likes}`);
-            }
-        })
-        .catch(err => {
-            console.log(`Error getting document`, err);
-        });
-    
-    }else {
-        message.channel.send(`Hey! Try defining a user first 😅`);
         //This gets the data
+        var getDoc = userRef
+            .get()
+            .then(doc => {
+                //Checks for trash
+                if (doc.data().id == '104030302023720960') {
+                    message.channel.send("Sorry, you're not in my league 😒");
+                } else if (!doc.exists || doc.data().affection == undefined) {
+                    message.channel.send("You don't like me what D:");
+                    console.log(`Document doesn't exist`);
+                } else {
+                    //updates
+                    var likes = doc.data().affection + 1;
+                    userRef.update({ affection: likes });
+                    message.channel.send(`oWo? ${target} What's up hot suff?😏`);
+                    message.channel.send(`${target} likes me this much ${likes}`);
+                }
+            })
+            .catch(err => {
+                console.log(`Error getting document`, err);
+            });
+
+    } else {
+        message.channel.send(`Hey! Try defining a user first 😅`);
     }
 
 

@@ -19,7 +19,6 @@ module.exports = (client, member) => {
           id: `${member.id}`,
           username: `${member.user.username}`,
           discriminator: `${member.user.discriminator}`,
-          gayness: `1`
       };
       currentMember.set(memberData);
   }
