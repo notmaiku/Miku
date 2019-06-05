@@ -13,7 +13,7 @@ exports.run = (client, message, args, member) => {
             .doc(`${message.guild.id}`)
             .collection('members')
             .doc(`${target.id}`);
-            //Members's affection field is instantiated 
+        //Members's affection field is instantiated 
         var memberData = userRef.set(
             {
                 affection: 0

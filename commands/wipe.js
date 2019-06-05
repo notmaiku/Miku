@@ -1,21 +1,21 @@
-exports.run = (message, guild) => {
+exports.run = (client, message, args, member) => {
     const admin = require('firebase-admin');
+    var FieldValue = require('firebase-admin').firestore.FieldValue;
+
 
     //references
     var db = admin.firestore();
-    //Members's affection field is instantiated 
-    var currentMembers = db.collection('servers').doc(`${guild.id}`).collection(`members`);
-    console.log(currentMembers)
-    currentMembers.forEach((member) => {
-        // var currentMember = db.collection('servers').doc(`${guild.id}`).collection(`members`).doc(`${member.id}`);
-        // currentMember.update({
-        //     gayness: FieldValue.delete()
-        // });
-        message.channel.send('Wiped 😅')
-    }).catch(err => {
-        message.reply("Could not wipe server");
-    });
-};
+    var currentMembers = db.collection('servers').doc(`${message.guild.id}`).collection(`members`);
+    // Gets each member from guild it was called in 
+    var count = message.guild.members.forEach(member => {
+        // Actually deletes the field
+        var removeField = currentMembers.doc(`${member.user.id}`).update({
+            gayness: FieldValue.delete()
+        }).catch(err => {
+            console.log(`The ID doesn't have the field being deleted, so "Probably a bot`)
+        })
+    })
+}
 
 exports.conf = {
     enabled: true,
