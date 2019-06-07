@@ -7,8 +7,7 @@ exports.run = (client, message, args) => {
             if (propSet.data().hasOwnProperty(key)) {
                 message.channel.send(key + "->" + propSet.data()[key])
             }
-        })
-}).catch(err => {
+        })}).catch(err => {
     console.log(`Error getting document`, err);
 });
 }

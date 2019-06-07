@@ -1,9 +1,8 @@
 exports.run = (client, message, args) => {
     const admin = require('firebase-admin');
     var db = admin.firestore();
-    var nameQuery = db.collection('servers').doc(`${message.guild.id}`).collection(`members`).where(`affection`, `>`, 1)
+    var nameQuery = db.collection('servers').doc(`${message.guild.id}`).collection(`members`).orderBy('affection', 'desc').limit(parseInt(args))
     nameQuery.get().then(queryFor => {
-        console.log()
         message.channel.send(`There are ${queryFor.size} results`)
         if (queryFor.size > 0) {
             queryFor.forEach((doc) => {
