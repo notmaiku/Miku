@@ -10,7 +10,7 @@ exports.run = (client, message, args, member) => {
     var count = message.guild.members.forEach(member => {
         // Actually deletes the field
         var removeField = currentMembers.doc(`${member.user.id}`).update({
-            gayness: FieldValue.delete()
+            affection: FieldValue.delete()
         }).catch(err => {
             console.log(`The ID doesn't have the field being deleted, so "Probably a bot`)
         })
