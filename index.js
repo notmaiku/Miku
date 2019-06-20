@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const Enmap = require("enmap");
 const fs = require("fs");
 const firebase = require("firebase");
+const sqlRef = require("./mysql/sql.js");
 var admin = require("firebase-admin");
 
 const client = new Discord.Client();
