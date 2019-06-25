@@ -11,35 +11,29 @@ module.exports = (client, guild) => {
     // Use connect method to connect to the server
     MongoClient.connect(url, function (err, client) {
         assert.equal(null, err);
-        console.log("Connected successfully to server " + client.db('gal'));
         const db = client.db('gal')
-        db.collection('servers').insertOne({
-            id: `${guild.id}`,
-            name: `${guild.name}`,
-            owner: `${guild.owner}`
-        })
-        .then((result)=>{
-            console.log(result)
-        })
-        const cursor = db.collection('inventory').find({ name: 'test' })
-        // guild.members.forEach((member) => {
-        //     if (!member.user.bot) { //ignoring the bots in the server.
-        //         // var currentMember = db.collection('servers').doc(`${guild.id}`).collection(`members`).doc(`${member.id}`);
-        //         // var memberData = {
-        //         //     id: `${member.id}`,
-        //         //     username: `${member.user.username}`,
-        //         //     discriminator: `${member.user.discriminator}`,
-        //         // };
-        //         db.servers.${ guild.id }.set({
-        //             id: `${member.id}`,
-        //             username: `${member.user.username}`,
-        //             discriminator: `${member.user.discriminator}`,
-        //         })
-        //         // currentMember.set(memberData)
-        //     }
-        // });
+        console.log("Connected successfully to server " + db);
+        console.log(db.collection('servers').find({'id': `${guild.id}`}))
+        if (db.collection('servers').find({id: `${guild.id}`}) == 0 || undefined) {
+            db.collection('servers').doc(`${guild.id}`).insertOne({
+                    id: `${guild.id}`,
+                    name: `${guild.name}`,
+                    owner: `${guild.owner}`
+                })
+                .then((result) => {
+                    console.log(result)
+                })
+        }
+        guild.members.forEach((member) => {
+            if (!member.user.bot &&  member.id != db.collection('members').find({member_id: `${member.id}`})) { //ignoring the bots in the server.
+                db.collection('members').insertOne({
+                    id: `${member.id}`,
+                    username: `${member.user.username}`,
+                    discriminator: `${member.user.discriminator}`,
+                })
+            }
+        });
         client.close();
     });
-        client.logger.cmd(`[GUILD JOIN] ${guild.name} (${guild.id}) added the bot. Owner: ${guild.owner.user.tag} (${guild.owner.user.id})`)
-        // //adding each user as a document to the users collection within the server
+    client.logger.cmd(`[GUILD JOIN] ${guild.name} (${guild.id}) added the bot. Owner: ${guild.owner.user.tag} (${guild.owner.user.id})`)
 };
