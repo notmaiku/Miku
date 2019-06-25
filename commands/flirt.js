@@ -8,17 +8,13 @@ exports.run = (client, message, args, member) => {
 
     //Checks for non strings
     if (target != null || undefined) {
-        var userRef = db
-            .collection('servers')
-            .doc(`${message.guild.id}`)
-            .collection('members')
-            .doc(`${target.id}`);
-        //Members's affection field is instantiated 
-        var memberData = userRef.set(
+        var memberData = db.collection('affection').updateOne(
+            {$set:
+                {user_id:  `${target.id}`, guild_id: `${guild.id}`}},
             {
                 affection: 0
             },
-            { merge: true }
+            { upsert: true }
         );
         //This gets the data
         var getDoc = userRef

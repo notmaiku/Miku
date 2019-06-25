@@ -12,25 +12,33 @@ module.exports = (client, guild) => {
     MongoClient.connect(url, function (err, client) {
         assert.equal(null, err);
         const db = client.db('gal')
-        console.log("Connected successfully to server " + db);
-        console.log(db.collection('servers').find({'id': `${guild.id}`}))
-        if (db.collection('servers').find({id: `${guild.id}`}) == 0 || undefined) {
-            db.collection('servers').doc(`${guild.id}`).insertOne({
-                    id: `${guild.id}`,
-                    name: `${guild.name}`,
+        db.collection('servers').updateOne(
+            { guild_id: `${guild.id}` },
+            {
+                $set: {
+                    guild_id: `${guild.id}`,
+                    guild_name: `${guild.name}`,
                     owner: `${guild.owner}`
-                })
-                .then((result) => {
-                    console.log(result)
-                })
-        }
+                }
+            },
+            { upsert: true }
+        )
         guild.members.forEach((member) => {
-            if (!member.user.bot &&  member.id != db.collection('members').find({member_id: `${member.id}`})) { //ignoring the bots in the server.
-                db.collection('members').insertOne({
-                    id: `${member.id}`,
-                    username: `${member.user.username}`,
-                    discriminator: `${member.user.discriminator}`,
-                })
+            if (!member.user.bot) { //ignoring the bots in the server.
+                db.collection('users').updateOne(
+                    { member_id: `${member.id}` },
+                    {
+                        $set: {
+                            user_id: `${member.id}`,
+                            username: `${member.user.username}`,
+                            discriminator: `${member.user.discriminator}`
+                        },
+                        $addToSet: {
+                            guild_id: `${guild.id}`,
+                        },
+                    },
+                    { upsert: true }
+                )
             }
         });
         client.close();
