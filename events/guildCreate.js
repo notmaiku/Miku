@@ -26,15 +26,14 @@ module.exports = (client, guild) => {
         guild.members.forEach((member) => {
             if (!member.user.bot) { //ignoring the bots in the server.
                 db.collection('users').updateOne(
-                    { member_id: `${member.id}` },
+                    { user_id: `${member.id}` },
                     {
                         $set: {
-                            user_id: `${member.id}`,
                             username: `${member.user.username}`,
                             discriminator: `${member.user.discriminator}`
                         },
                         $addToSet: {
-                            guilds: [`${guild.id}`], 
+                            guilds: {guild_id: `${guild.id}`,affection: 0}, 
                         },
                     },
                     { upsert: true }

@@ -20,31 +20,28 @@ exports.run = (client, message, args, member) => {
                 assert.equal(null, err);
                 const db = client.db('gal')
 
-                var memberData = db.collection('affection').updateOne({
-                    user_id: `${target.id}`
+                db.collection('users').updateOne({
+                    user_id: target.id
                 }, {
-                    $set: {
-                        guild: {
-                            'guild_id.$[element]': message.guild.id,
-                            affection: 0
+                        $inc: {
+                            "guilds.$[guild].affection": 1
                         }
-                    },
-                    $inc:{
-                            'guild.affection': 1
                     }
-                }, {
-                    upsert: true,
-                    multi: true,
-                    arrayFilters: [{"element": message.guild.id}]
-                })
-                let likes = db.collection('users').find({
-                    user_id: `${target.id}`,
-                    guild: {
-                        guild_id: `${message.guild.id}`
+                    , {
+                        arrayFilters: [{ "guild.guild_id": { $eq: message.guild.id } }]
                     }
+                )
+                let cursor = db.collection('users').find(
+                    { user_id: target.id }
+                )
+                cursor.forEach((guild) => {
+                    guild.guilds.forEach((id) => {
+                        if (id.guild_id == message.guild.id) {
+                            message.channel.send(`oWo? ${target} What's up hot suff?😏`);
+                            message.channel.send(`${target} likes me this much ${id.affection}`);
+                        }
+                    })
                 })
-                message.channel.send(`oWo? ${target} What's up hot suff?😏`);
-                message.channel.send(`${target} likes me this much ${likes}`);
                 client.close();
             });
         };
