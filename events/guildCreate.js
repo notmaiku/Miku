@@ -34,7 +34,7 @@ module.exports = (client, guild) => {
                             discriminator: `${member.user.discriminator}`
                         },
                         $addToSet: {
-                            guild_id: `${guild.id}`,
+                            guilds: [`${guild.id}`], 
                         },
                     },
                     { upsert: true }
