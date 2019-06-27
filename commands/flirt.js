@@ -5,8 +5,10 @@ exports.run = (client, message, args, member) => {
     //Checks for non strings
     if (target != null || undefined) {
         //Checks for trash
-        if (member.id == '104030302023720960') {
+        if (target.id == '104030302023720960') {
             message.channel.send("Sorry, you're not in my league 😒");
+	}else if(target.id == '580592927680626691'){
+            message.channel.send("Desperate aren't ya  😅");
         } else {
             //updates
             const MongoClient = require('mongodb').MongoClient;
