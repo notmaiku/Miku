@@ -36,7 +36,7 @@ module.exports = (client, guild) => {
                         },
                         //List of guilds the user belongs to where this bot is also
                         $addToSet: {
-                            guilds: {guild_id: `${guild.id}`,affection: 0}, 
+                            guilds: {guild_id: `${guild.id}`}, 
                         },
                     },
                     { upsert: true }
