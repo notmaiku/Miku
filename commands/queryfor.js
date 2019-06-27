@@ -1,49 +1,38 @@
 exports.run = (client, message, args) => {
-    const admin = require('firebase-admin');
-    var db = admin.firestore();
-    //You can use the firebase where clause but idk
-    var whereclause = db.collection('servers').doc(`${message.guild.id}`).collection(`members`).where(`${args}`, `>`, 0);
-    //This one doesn't use search query
-    var nameQuery = db.collection('servers').doc(`${message.guild.id}`).collection(`members`).orderBy('username');
-    nameQuery.get().then(queryFor => {
-        message.channel.send(`There are ${queryFor.size} results`)
-        if (queryFor.size > 0) {
-            queryFor.forEach((doc) => {
-                if (doc.data().affection && doc.data().username) {
-                    message.channel.send(`${doc.data().username}: ${doc.data().affection}`);
-                }
-            })
-        } else {
-            message.channel.send("No results found :(")
-        }
-    }).catch(err => {
-        console.log('error')
-    })
+    const MongoClient = require('mongodb').MongoClient;
+    const assert = require('assert');
 
-    //Each member call the database
-    
-    // message.guild.members.forEach(member => {
-    //     var affectionQuery = db .collection('servers') .doc(`${message.guild.id}`) .collection(`members`).doc(`${member.user.id}`);
-    //     affectionQuery .get() .then(affectionProp => {
-    //             if (!member.user.bot) {
-    //                 if (affectionProp.data().affection > 1) {
-    //                     //ignoring the bots in the server.
-    //                     if (!member.user.bot) {
-    //                         message.channel.send(
-    //                             `${
-    //                                 affectionProp.data().username
-    //                             } affection is ${
-    //                                 affectionProp.data().affection
-    //                             }`
-    //                         );
-    //                     }
-    //                 }
-    //             }
-    //         })
-    //         .catch(err => {
-    //             console.log('Something went wrong');
-    //         });
-    // });
+    // Connection URL
+    const url = 'mongodb://@localhost:27017/gal?authSource=$[authSource]';
+
+    // Use connect method to connect to the server
+    MongoClient.connect(url, function (err, client) {
+        assert.equal(null, err);
+        const db = client.db('gal')
+        // This aggregates our results to join user field into affection
+        let affection = db.collection('affection').aggregate([
+            //Only gets affectoin docs with the guild id FK
+            { $match: { guild_id: message.guild.id } },
+            {
+                //Actual what to merge part
+                $lookup:
+                {
+                    from: 'users',
+                    localField: 'user_id',
+                    foreignField: 'user_id',
+                    as: 'prop'
+                },
+            }
+        ])
+        // Taking aggregated result and printing out the respected username
+        affection.forEach((user) => {
+            //I build the msg to user, but not whole msg uWu
+            let msg = 'Affection is '
+            msg += user.affection +' for '
+            user.prop.forEach((user) => {message.channel.send( msg +user.username)})
+        })
+        client.close()
+    })
 };
 
 exports.conf = {

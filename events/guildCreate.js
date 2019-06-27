@@ -12,6 +12,7 @@ module.exports = (client, guild) => {
     MongoClient.connect(url, function (err, client) {
         assert.equal(null, err);
         const db = client.db('gal')
+        // Adds server to server collection
         db.collection('servers').updateOne(
             { guild_id: `${guild.id}` },
             {
@@ -23,6 +24,7 @@ module.exports = (client, guild) => {
             },
             { upsert: true }
         )
+        // Goes through each member in enmap and adds them to user collection
         guild.members.forEach((member) => {
             if (!member.user.bot) { //ignoring the bots in the server.
                 db.collection('users').updateOne(
@@ -32,6 +34,7 @@ module.exports = (client, guild) => {
                             username: `${member.user.username}`,
                             discriminator: `${member.user.discriminator}`
                         },
+                        //List of guilds the user belongs to where this bot is also
                         $addToSet: {
                             guilds: {guild_id: `${guild.id}`,affection: 0}, 
                         },

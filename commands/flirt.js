@@ -20,28 +20,25 @@ exports.run = (client, message, args, member) => {
                 assert.equal(null, err);
                 const db = client.db('gal')
 
-                db.collection('users').updateOne({
-                    user_id: target.id
+                //Increments user's property in affection collection or births
+                db.collection('affection').updateOne({
+                    user_id: target.id, guild_id: message.guild.id
                 }, {
                         $inc: {
-                            "guilds.$[guild].affection": 1
+                            affection: 1
                         }
-                    }
-                    , {
-                        arrayFilters: [{ "guild.guild_id": { $eq: message.guild.id } }]
-                    }
+                    },
+                    { upsert: true }
                 )
-                let cursor = db.collection('users').find(
-                    { user_id: target.id }
+                //Querying for user's affection
+                let cursor = db.collection('affection').find(
+                    { user_id: target.id, guild_id: message.guild.id }
                 )
-                cursor.forEach((guild) => {
-                    guild.guilds.forEach((id) => {
-                        if (id.guild_id == message.guild.id) {
-                            message.channel.send(`oWo? ${target} What's up hot suff?😏`);
-                            message.channel.send(`${target} likes me this much ${id.affection}`);
-                        }
-                    })
+                //I don't know why I have to do forEach but this it to access to cursor
+                cursor.forEach(prop => {
+                    message.channel.send(`uWu you like me this m-much ${prop.affection}!`)
                 })
+
                 client.close();
             });
         };
