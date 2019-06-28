@@ -1,32 +1,18 @@
 const Discord = require("discord.js");
 const Enmap = require("enmap");
 const fs = require("fs");
-const firebase = require("firebase");
-var admin = require("firebase-admin");
+
 
 const client = new Discord.Client();
 client.config = require("./config.js");
+const mongoUrl = client.config.mongo.url;
 // We also need to make sure we're attaching the config to the CLIENT so it's accessible everywhere!
 
 // Let's start by getting some useful functions that we'll use throughout
 // the bot, like logs and elevation features.
 require("./modules/functions.js")(client);
-
-//realtime firebase
-
-firebase.initializeApp(client.config.firebaseConfig)
-
-//firestore 
-
-var serviceAccount = require("./galconf.json");
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://gal-bot.firebaseio.com"
-});
-
 client.commands = new Enmap();
-client.settings = new Enmap({name: "settings"});
+client.settings = new Enmap({ name: "settings" });
 
 // Require our logger
 client.logger = require("./modules/Logger");
@@ -56,7 +42,7 @@ const init = async () => {
     });
   });
 
-// Generate a cache of client permissions for pretty perm names in commands.
+  // Generate a cache of client permissions for pretty perm names in commands.
   client.levelCache = {};
   for (let i = 0; i < client.config.permLevels.length; i++) {
     const thisLevel = client.config.permLevels[i];

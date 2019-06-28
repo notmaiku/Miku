@@ -1,27 +1,21 @@
 exports.run = (client, message, args, member) => {
     const target = message.mentions.members.first();
-
-
     //Checks for non strings
     if (target != null || undefined) {
         //Checks for trash
         if (target.id == '104030302023720960') {
             message.channel.send("Sorry, you're not in my league 😒");
-	}else if(target.id == '580592927680626691'){
+        } else if (target.id == '580592927680626691') {
             message.channel.send("Desperate aren't ya  😅");
         } else {
-            //updates
+            //Mongo imports
+            let url = 'mongodb://mongodb0.localhost:27017/gal'
             const MongoClient = require('mongodb').MongoClient;
             const assert = require('assert');
-
-            // Connection URL
-            const url = 'mongodb://@localhost:27017/gal?authSource=$[authSource]';
-
-            // Use connect method to connect to the server
-            MongoClient.connect(url, function (err, client) {
+            //Connect to Mongo func
+            MongoClient.connect(url, { useNewUrlParser: true }, function (err, client) {
                 assert.equal(null, err);
                 const db = client.db('gal')
-
                 //Increments user's property in affection collection or births
                 db.collection('affection').updateOne({
                     user_id: target.id, guild_id: message.guild.id
@@ -40,9 +34,8 @@ exports.run = (client, message, args, member) => {
                 cursor.forEach(prop => {
                     message.channel.send(`uWu you like me this m-much ${prop.affection}!`)
                 })
-
                 client.close();
-            });
+            })
         };
 
     } else {

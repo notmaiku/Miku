@@ -26,16 +26,15 @@ exports.run = (client, message, args) => {
             ])
             // Taking aggregated result anguild.idd printing out the respected username
             try {
-                db.collection('affection').updateMany(
+                db.collection('affection').deleteMany(
                     { guild_id: { $eq: message.guild.id }},
-                    { $set: { 'affection': 0 } }
                 )
             } catch (err) {
                 console.log(err);
             }
             client.close()
         })
-    }else{message.channel.send("Enter @Mundane or something >.>")}
+    }else{message.channel.send("Enter @Tyler or something >.>")}
 };
 
 exports.conf = {
@@ -46,8 +45,8 @@ exports.conf = {
 };
 
 exports.help = {
-    name: 'Resets',
-    category: 'Not abuse',
-    description: 'Wipes fields of all user affection prop',
-    usage: 'wipe'
+    name: 'Worse than Chernobyl',
+    category: 'Management',
+    description: 'Deletes documents in the guild',
+    usage: 'massdelete'
 };

@@ -1,21 +1,49 @@
 exports.run = (client, message, args) => {
-    const admin = require('firebase-admin');
-    var db = admin.firestore();
-    var nameQuery = db.collection('servers').doc(`${message.guild.id}`).collection(`members`).orderBy('affection', 'desc').limit(parseInt(args))
-    nameQuery.get().then(queryFor => {
-        message.channel.send(`There are ${queryFor.size} results`)
-        if (queryFor.size > 0) {
-            queryFor.forEach((doc) => {
-                if (doc.data().username) {
-                    message.channel.send(`${doc.data().username}: ${doc.data().affection}`);
-                }
+    const MongoClient = require('mongodb').MongoClient;
+    const assert = require('assert');
+
+    // Connection URL
+    const url = 'mongodb://@localhost:27017/gal?authSource=$[authSource]';
+    console.log(parseInt(args))
+
+    //Just making a reasonble user inpurt query boundary to show top results
+    if( args > 0 && args < 10){
+
+    // Use connect method to connect to the server
+    MongoClient.connect(url, function (err, client) {
+        assert.equal(null, err);
+        const db = client.db('gal')
+        // This aggregates our results to join user field into affection
+        let affection = db.collection('affection').aggregate([
+            //Only gets affectoin docs with the guild id FK
+            { $match: { guild_id: message.guild.id } },
+            {
+                //Actual what to merge part
+                $lookup:
+                {
+                    from: 'users',
+                    localField: 'user_id',
+                    foreignField: 'user_id',
+                    as: 'prop'
+                },
+            },
+            // Lowest to Highest  sorting
+            { $sort: { affection: -1 } },
+            // Setting limit for top results from user argument in msg
+            { $limit: parseInt(args)}
+        ])
+        // Taking aggregated result and printing out the respected username
+        affection.forEach((user) => {
+            //I build the msg to user, but not whole msg uWu
+            let msg = 'Affection is '
+            msg += user.affection + ' for '
+            user.prop.forEach((user) => {
+                message.channel.send(msg + user.username)
             })
-        } else {
-            message.channel.send("No results found :(")
-        }
-    }).catch(err => {
-        console.log('error')
+        })
+        client.close()
     })
+    }else{message.channel.send("Enter a number 0 - 10😅")}
 };
 
 exports.conf = {

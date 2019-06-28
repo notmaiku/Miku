@@ -131,6 +131,7 @@ const config = {
             "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-733wh%40gal-bot.iam.gserviceaccount.com"
           },
     mongo:{
+            url : 'mongodb://@localhost:27017/gal?authSource=$[authSource]'
     }
 };
 

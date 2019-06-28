@@ -29,7 +29,8 @@ exports.run = (client, message, args) => {
             //I build the msg to user, but not whole msg uWu
             let msg = 'Affection is '
             msg += user.affection +' for '
-            user.prop.forEach((user) => {message.channel.send( msg +user.username)})
+            user.prop.forEach((user) => {
+                message.channel.send( msg + user.username)})
         })
         client.close()
     })
