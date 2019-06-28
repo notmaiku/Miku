@@ -1,27 +1,41 @@
 // This event executes when a new member joins a server. Let's welcome them!
 
-module.exports = (client, member) => {
-  //setup database
-  const admin = require("firebase-admin");
-
-  //references
-  var db = admin.firestore();
+module.exports = (client, member, guild) => {
+  const MongoClient = require('mongodb').MongoClient;
 
   // Load the guild's settings
   const settings = client.getSettings(member.guild);
   console.log(settings)
+  const assert = require('assert');
 
-  //storing the new member onto firebase
-  if (!member.user.bot) {
-      console.log(`${member.guild.id}`);
-      var currentMember = db.collection('servers').doc(`${member.guild.id}`).collection(`members`).doc(`${member.id}`);
-      var memberData = {
-          id: `${member.id}`,
+  // Connection URL
+  const url = 'mongodb://@localhost:27017/gal?authSource=$[authSource]';
+
+  // Use connect method to connect to the server
+  MongoClient.connect(url, function (err, client) {
+    assert.equal(null, err);
+    const db = client.db('gal')
+    // Goes through each member in enmap and adds them to user collection
+    if (!member.user.bot) { //ignoring the bots in the server.
+      db.collection('users').updateOne({
+        user_id: `${member.id}`
+      }, {
+        $set: {
           username: `${member.user.username}`,
-          discriminator: `${member.user.discriminator}`,
-      };
-      currentMember.set(memberData);
-  }
+          discriminator: `${member.user.discriminator}`
+        },
+        //List of guilds the user belongs to where this bot is also
+        $addToSet: {
+          guilds: {
+            guild_id: `${member.guild.id}`
+          },
+        },
+      }, {
+        upsert: true
+      })
+    };
+    client.close();
+  });
 
   // If welcome is off, don't proceed (don't welcome the user)
   if (settings.welcomeEnabled !== "true") return;
