@@ -106,32 +106,11 @@ const config = {
             check: (message) => message.client.config.ownerID === message.author.id
         }
     ],
-    //Firebase config
-    // Your web app's Firebase configuration
-    firebaseConfig: {
-        apiKey: "AIzaSyCiLIpLcBbNiKIV8oHPIgPU4Va_nhbZePQ",
-        authDomain: "gal-bot.firebaseapp.com",
-        databaseURL: "https://gal-bot.firebaseio.com",
-        projectId: "gal-bot",
-        storageBucket: "gal-bot.appspot.com",
-        messagingSenderId: "633250617894",
-        appId: "1:633250617894:web:f4efefeafd277313"
-    },
-    firestoreConfig: 
-        {
-            "type": "service_account",
-            "project_id": "gal-bot",
-            "private_key_id": "ddcb4384a9f6244075857b88eb44c9a1a58a25ae",
-            "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCMkkL3WZ/1hvdJ\nJhbjyquWqaqqGLtF45LiACY7rH7RXW6tpJuqwrXotCr153glRck2uLgmcjFXyY2M\njsJcSljAHlibjT38XPzyHJbelusrjl14K82HIAl0mOXVCyN/ZE1qoiNCzw0268cu\nK5Dg3wGOn5hS/OmIfJaSLapZ40uE3C7pQns2XzOqL7BcT7OZDzXI5rNe149B/h12\njZj4QkjMajpYDtJrc3zDa2ydgkH022danwzdD0vxqIJV68iJJvuZhE2EUP++nHwU\noScEbchz6Tp4CxojG1ER0Hn3LP2laCK4oiLVMoy1TqkhMCENsHOttDIpdJUZg13a\nB6QHxuERAgMBAAECggEABqRRR9PHNSQdNmqHX7hbdMsj3EU+gYAOCFHInK6TAChX\njrqxrH8GVnY/Vqa7AHtYdVaDZHUmL9M/FfxnknHkmUDBz+k7u9smrDeluQMVXeWs\nVM2QiK0+xyCjkOY1pVr3VbXPH9Stx5nau5utPPPKhHs12Lt4mxVkbagc1cIRpxeI\njUzROB585ZqY3/WPTLiBobTKUDxWYyPpzh4WMPt+5Rf5N7ZKJyLGSgYS9GKp1F4h\noqepDZ9IvYCaAh9pYyT7qEVd9UVG+jkRtGm7FMyZ+dj8SgvzF27IyhVFdcWJbrN0\nK/i8NUCthjjeSLqgA9Bls/njEhZ1t+ThGIQSiNdPgQKBgQDB+QnkwbjpGUDmXA/b\nFAswAKkbd3iyeHpEmxmOBBsHqfM1GmDtsHEmRAjQj9R8fQWmrlAtPnUyEeUrNOWW\nKVsN9zD43iHQ8TUcLtBOF1wSsG83yw+F9IDfWSL9SFWzpRvUna2tw/bogTaWk+6b\nY59HnUjn8TYzHQ/58vsFiRS/gQKBgQC5ha7IHbEykW3mRoFvaNh8tZwPdMY1S34N\n4O8hwASlQkiyv+cvrIgvdkGMMFmedwGdfjWW7rBPWYbQIJIqVGYGch7QluQhzAU2\nXd8mcG+WZ2tDRrvGf3TtxZcYQ3h2aacVrA7EtnfcXe9jB8ipLqpM7oLGe8OG7Umt\nf/lY3brpkQKBgEL8JZaB78FPn0Ht+OvG+DYThFKf52Z6hH68sQ6CDHORFRP5kA+F\nJw334LNleBOleRYejEGTmBU6aNGK6t34WiFwg9DtpO/q3FRnNjhBiOJLW50A2tN/\npCF9PsAJAs+O7RV3fkrLqbCRLrDBVV0EAjVQ86RlgDoWhzXh2x4GQMwBAoGBALiK\n8RSg7I3XuhFxGvneulI7ORTq3OtQwABAOr9AyZ419CjS2b5Dimhj4sn3on4N9S5b\nyCTuI7Wa4Y6Qh7TRpXdN97cYEbBIyPqOoBYVi/p5v2n5p3nJeV+3yBfbra1kZU8a\nispEk7BCRIkmygT4pXDHZJDZteK2kS6j+T3bujzxAoGAWt+iFRliXHKxZVIk3VWS\nhf9wbd/XfIvbAc7SDlD5AxPuNyt9wdeJaIAuaY/3unjAPHtNsl0p0WUh4HGtY6db\nqyl0CqghRn6GyMoatNgBUl/W2vFGyLbxnYqz5P6p+hH4xyY4vSjra3b20Y0oHWhy\nc0s2zN5LkA2nA9iRVCPWMdo=\n-----END PRIVATE KEY-----\n",
-            "client_email": "firebase-adminsdk-733wh@gal-bot.iam.gserviceaccount.com",
-            "client_id": "101563202781212999365",
-            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-            "token_uri": "https://oauth2.googleapis.com/token",
-            "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-            "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-733wh%40gal-bot.iam.gserviceaccount.com"
-          },
-    mongo:{
-            url : 'mongodb://@localhost:27017/gal?authSource=$[authSource]'
+    //Mongo Shit
+    mongo: {
+        "c": require('mongodb').MongoClient,
+        "a": require('assert'),
+        "url": 'mongodb://@localhost:27017/gal?'
     }
 };
 

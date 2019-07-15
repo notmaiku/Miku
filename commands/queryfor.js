@@ -26,6 +26,7 @@ exports.run = (client, message, args) => {
         ])
         // Taking aggregated result and printing out the respected username
         affection.forEach((user) => {
+            console.log(user.prop)
             //I build the msg to user, but not whole msg uWu
             let msg = 'Affection is '
             msg += user.affection +' for '

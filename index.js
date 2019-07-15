@@ -5,7 +5,6 @@ const fs = require("fs");
 
 const client = new Discord.Client();
 client.config = require("./config.js");
-const mongoUrl = client.config.mongo.url;
 // We also need to make sure we're attaching the config to the CLIENT so it's accessible everywhere!
 
 // Let's start by getting some useful functions that we'll use throughout
@@ -16,6 +15,11 @@ client.settings = new Enmap({ name: "settings" });
 
 // Require our logger
 client.logger = require("./modules/Logger");
+
+//Mongo imports
+const MongoClient = require('mongodb').MongoClient;
+const assert = require('assert');
+const url = 'mongodb://@localhost:27017/gal?';
 
 // Let's start by getting some useful functions that we'll use throughout
 // the bot, like logs and elevation features.
@@ -39,8 +43,10 @@ const init = async () => {
       let commandName = file.split(".")[0];
       console.log(`Attempting to load command ${commandName}`);
       client.commands.set(commandName, props);
+      
     });
   });
+
 
   // Generate a cache of client permissions for pretty perm names in commands.
   client.levelCache = {};

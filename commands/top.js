@@ -54,8 +54,8 @@ exports.conf = {
 };
 
 exports.help = {
-    name: "Displays your filter",
+    name: "Top list",
     category: "server",
-    description: "Will display all you filtered",
-    usage: "query"
+    description: "Displays top users limited by user args between 0 and 10",
+    usage: "top [num]"
 };
