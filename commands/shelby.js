@@ -10,13 +10,13 @@ exports.run = (client, message) => {
 exports.conf = {
     enabled: true,
     guildOnly: false,
-    aliases: [],
+    aliases: ["tyler"],
     permLevel: "User"
 };
 
 exports.help = {
-    name: "isgay",
+    name: "tyler is gay",
     category: "Miscellaneous",
-    description: "calls someone gay",
-    usage: "isgay @[user]"
+    description: "Does math for Tyler",
+    usage: "shebly #"
 };
