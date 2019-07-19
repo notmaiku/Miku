@@ -1,20 +1,3 @@
-<<<<<<< HEAD
-exports.run = (client, message, args, member) => {
-    const admin = require('firebase-admin');
-    var FieldValue = require('firebase-admin').firestore.FieldValue;
-
-
-    //references
-    var db = admin.firestore();
-    var currentMembers = db.collection('servers').doc(`${message.guild.id}`).collection(`members`);
-    // Gets each member from guild it was called in 
-    var count = message.guild.members.forEach(member => {
-        // Actually deletes the field
-        var removeField = currentMembers.doc(`${member.user.id}`).update({
-            affection: FieldValue.delete()
-        }).catch(err => {
-            console.log(`The ID doesn't have the field being deleted, so "Probably a bot`)
-=======
 exports.run = (client, message, args) => {
     const target = message.mentions.members.first();
     const MongoClient = require('mongodb').MongoClient;
@@ -43,17 +26,15 @@ exports.run = (client, message, args) => {
             ])
             // Taking aggregated result anguild.idd printing out the respected username
             try {
-                db.collection('affection').updateMany(
+                db.collection('affection').deleteMany(
                     { guild_id: { $eq: message.guild.id }},
-                    { $set: { 'affection': 0 } }
                 )
             } catch (err) {
                 console.log(err);
             }
             client.close()
->>>>>>> mongo-trance
         })
-    }else{message.channel.send("Enter @Mundane or something >.>")}
+    }else{message.channel.send("Enter @Tyler or something >.>")}
 };
 
 exports.conf = {
@@ -64,8 +45,8 @@ exports.conf = {
 };
 
 exports.help = {
-    name: 'Resets',
-    category: 'Not abuse',
-    description: 'Wipes fields of all user affection prop',
-    usage: 'wipe'
+    name: 'Worse than Chernobyl',
+    category: 'Management',
+    description: 'Deletes documents in the guild',
+    usage: 'massdelete'
 };

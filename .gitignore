@@ -67,4 +67,4 @@ typings/
 # dotenv environment variables file
 .env
 
-gal-bot-firebase-adminsdk-733wh-f9961c0413.json
+/config.js

@@ -1,8 +1,7 @@
 const Discord = require("discord.js");
 const Enmap = require("enmap");
 const fs = require("fs");
-const firebase = require("firebase");
-var admin = require("firebase-admin");
+
 
 const client = new Discord.Client();
 client.config = require("./config.js");
@@ -11,25 +10,16 @@ client.config = require("./config.js");
 // Let's start by getting some useful functions that we'll use throughout
 // the bot, like logs and elevation features.
 require("./modules/functions.js")(client);
-
-//realtime firebase
-
-firebase.initializeApp(client.config.firebaseConfig)
-
-//firestore 
-
-var serviceAccount = require("./galconf.json");
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://gal-bot.firebaseio.com"
-});
-
 client.commands = new Enmap();
-client.settings = new Enmap({name: "settings"});
+client.settings = new Enmap({ name: "settings" });
 
 // Require our logger
 client.logger = require("./modules/Logger");
+
+//Mongo imports
+const MongoClient = require('mongodb').MongoClient;
+const assert = require('assert');
+const url = 'mongodb://@localhost:27017/gal?';
 
 // Let's start by getting some useful functions that we'll use throughout
 // the bot, like logs and elevation features.
@@ -53,10 +43,12 @@ const init = async () => {
       let commandName = file.split(".")[0];
       console.log(`Attempting to load command ${commandName}`);
       client.commands.set(commandName, props);
+      
     });
   });
 
-// Generate a cache of client permissions for pretty perm names in commands.
+
+  // Generate a cache of client permissions for pretty perm names in commands.
   client.levelCache = {};
   for (let i = 0; i < client.config.permLevels.length; i++) {
     const thisLevel = client.config.permLevels[i];
