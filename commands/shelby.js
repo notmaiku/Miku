@@ -1,5 +1,5 @@
 exports.run = (client, message) => {
-    let tyler = require('../gay')
+    let tyler = require('../dumbexport')
     message.channel.send("Tyler likes "+tyler.dog+" Let's do some math " + tyler.math(2));
     let kek = (n) => {
         return tyler.math(n) * tyler.math(n)
