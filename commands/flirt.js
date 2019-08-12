@@ -9,7 +9,7 @@ exports.run = (client, message, args, member) => {
         } else if (target.id == '580592927680626691') {
             message.channel.send("Desperate aren't ya  😅");
         } else {
-            mc.c.connect(mc.url, (err, client) => {
+            mc.c.connect(mc.url, mc.p, (err, client) => {
                 mc.a.equal(null, err);
                 const db = client.db('gal')
                 db.collection('affection').updateOne({
@@ -24,7 +24,7 @@ exports.run = (client, message, args, member) => {
                 //Querying for user's affection
                 let cursor = db.collection('affection').find(
                     { user_id: target.id, guild_id: message.guild.id }
-                ).explain("executionStats")
+                )
                 //I don't know why I have to do forEach but this it to access to cursor
                 cursor.forEach(prop => {
                     message.channel.send(`uWu you like me this m-much ${prop.affection}!`)
