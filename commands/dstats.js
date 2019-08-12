@@ -6,7 +6,7 @@ exports.run = (client, message, args, member) => {
     const url = 'mongodb://@localhost:27017/gal?authSource=$[authSource]';
 
     // Use connect method to connect to the server
-    MongoClient.connect(url, function (err, client) {
+    MongoClient.connect(url, (err, client) => {
         assert.equal(null, err);
         const db = client.db('gal')
         // This aggregates our results to join user field into affection
