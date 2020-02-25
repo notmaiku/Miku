@@ -24,7 +24,7 @@ exports.run = (client, message, args) => {
                     },
                 }
             ])
-            // Taking aggregated result anguild.idd printing out the respected username
+            // Taking aggregated result for guild.id printing out the respected username
             try {
                 db.collection('affection').deleteMany(
                     { guild_id: { $eq: message.guild.id }},

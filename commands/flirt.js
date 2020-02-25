@@ -1,6 +1,8 @@
+var update = require('../mongo/update')
+var lookup = require('../mongo/lookup')
+
 exports.run = (client, message, args, member) => {
     const target = message.mentions.members.first();
-    let mc = client.config.mongo                  
     //Checks for non strings
     if (target != null || undefined) {
         //Checks for trash
@@ -9,29 +11,9 @@ exports.run = (client, message, args, member) => {
         } else if (target.id == '580592927680626691') {
             message.channel.send("Desperate aren't ya  😅");
         } else {
-            mc.c.connect(mc.url, mc.p, (err, client) => {
-                mc.a.equal(null, err);
-                const db = client.db('gal')
-                db.collection('affection').updateOne({
-                    user_id: target.id, guild_id: message.guild.id
-                }, {
-                        $inc: {
-                            affection: 1
-                        }
-                    },
-                    { upsert: true , w: 1, },
-                )
-                //Querying for user's affection
-                let cursor = db.collection('affection').find(
-                    { user_id: target.id, guild_id: message.guild.id }
-                )
-                //I don't know why I have to do forEach but this it to access to cursor
-                cursor.forEach(prop => {
-                    message.channel.send(`uWu you like me this m-much ${prop.affection}!`)
-                })
-                client.close()
-            })
-        }
+                update(client, target.id, message.guild.id, message, 'affection');
+                lookup(client, target.id, message.guild.id, message, 'affection', `uWu you like me this m-much`);
+            }
     } else {
         message.channel.send(`Hey! Try defining a user first 😅`);
     }

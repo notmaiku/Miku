@@ -11,7 +11,7 @@ exports.run = (client, message, args) => {
             const db = client.db('gal')
             // This aggregates our results to join user field into affection
             let affection = db.collection('affection').aggregate([
-                //Only gets affectoin docs with the guild id FK
+                //Only gets affection docs with the guild id FK
                 { $match: { guild_id: message.guild.id } },
                 {
                     //Actual what to merge part
@@ -24,7 +24,7 @@ exports.run = (client, message, args) => {
                     },
                 }
             ])
-            // Taking aggregated result anguild.idd printing out the respected username
+            // Taking aggregated result guild.id printing out the respected username
             try {
                 db.collection('affection').updateMany(
                     { guild_id: { $eq: message.guild.id }},
